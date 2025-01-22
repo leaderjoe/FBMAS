@@ -31,7 +31,7 @@ public class Worker : BackgroundService
             {
                 _logger.LogDebug("From runner kicking off the scraping of facebook marketplace");
                 // fire and forget because it will be happening again
-                _ = _fbMarketplace.ScrapeFacebookMarketplaceAsync();
+                _ = _fbMarketplace.ScrapeFacebookMarketplaceAsync("bike", FBMAS.Utilities.Enums.MarketplaceLocations.Portland);
                 lastRunTime = DateTime.UtcNow;
             }
             else

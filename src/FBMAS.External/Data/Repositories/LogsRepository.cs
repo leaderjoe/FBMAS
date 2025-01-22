@@ -28,11 +28,13 @@ public class LogsRepository : ILogsRepository
 
         await _dapper.Connection.OpenAsync();
 
-        await _dapper.Connection.ExecuteAsync("insert into Logs (Timestamp, Log), VALUES (NOW(), @log)", new { log });
+        await _dapper.Connection.ExecuteAsync("insert into Logs (Timestamp, Log) VALUES (NOW(), @log)", new { log });
 
         await _dapper.Connection.CloseAsync();
 
         _logger.LogDebug("alledgedly done adding logs");
     }
+
+
 
 }

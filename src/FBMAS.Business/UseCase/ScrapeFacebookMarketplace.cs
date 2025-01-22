@@ -1,12 +1,14 @@
 using System;
+using System.Web;
 using FBMAS.Service.Scraper;
+using FBMAS.Utilities.Enums;
 using Microsoft.Extensions.Logging;
 
 namespace FBMAS.Business.UseCase;
 
 public interface IScrapeFacebookMarketplace
 {
-    Task ScrapeFacebookMarketplaceAsync();
+    Task ScrapeFacebookMarketplaceAsync(string spaceDelimitedSearchCriteria, MarketplaceLocations location);
 }
 public class ScrapeFacebookMarketplace : IScrapeFacebookMarketplace
 {
@@ -18,9 +20,10 @@ public class ScrapeFacebookMarketplace : IScrapeFacebookMarketplace
         _scraper = scraper;
     }
 
-    public async Task ScrapeFacebookMarketplaceAsync()
+    public async Task ScrapeFacebookMarketplaceAsync(string spaceDelimitedSearchCriteria, MarketplaceLocations location)
     {
         _logger.LogDebug("scrapin'");
-        await _scraper.ScrapeAsync("https://facebook.com/marketplace");
+        string urlEncodedSearchCriteria = HttpUtility.UrlPathEncode(spaceDelimitedSearchCriteria);
+        await _scraper.ScrapeAsync($"https://www.facebook.com/marketplace/{location}/search?deliveryMethod=local_pick_up&sortBy=creation_time_descend&query={urlEncodedSearchCriteria}&exact=false");
     }
 }
